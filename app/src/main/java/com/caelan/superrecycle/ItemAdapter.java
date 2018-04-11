@@ -4,14 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 /**
- * Created by yangjiacheng on 2017/12/11.
+ * Created by yangjiacheng on 2018/4/11.
  * ...
  */
+interface ItemAdapter<Model, VH extends RecyclerView.ViewHolder> {
 
-public interface ItemAdapter<SuperViewHolder extends RecyclerView.ViewHolder, T> {
+    void onBindViewHolder(VH holder, Model model);
 
-    SuperViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-
-    void onBindViewHolder(SuperViewHolder viewHolder, T data);
-
+    VH onCreateViewHolder(ViewGroup parent, int viewType);
 }

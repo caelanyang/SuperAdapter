@@ -1,22 +1,21 @@
 package com.caelan.superrecycle;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 /**
  * Created by yangjiacheng on 2018/4/11.
  * ...
  */
-public class BaseItemAdapter implements ItemAdapter<Object, MyBindViewHolder> {
+public class BaseItemAdapter implements ItemAdapter<TextBean, SuperViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(MyBindViewHolder holder, Object o) {
+    public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
 
     }
 
     @Override
-    public MyBindViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SuperViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
     }
 }

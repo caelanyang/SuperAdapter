@@ -1,5 +1,9 @@
 package com.caelan.superrecycle;
 
+import android.support.annotation.NonNull;
+
+import com.caelan.superrecycle.data.DataSource;
+
 import java.util.ArrayList;
 
 /**
@@ -9,6 +13,14 @@ import java.util.ArrayList;
 public class SimpleDataSource<T> implements DataSource<T> {
 
     ItemAdapter mItemAdapter;
+
+    SuperAdapter mAdapter;
+
+
+
+    public SimpleDataSource(SuperAdapter mAdapter) {
+        this.mAdapter = mAdapter;
+    }
 
     @Override
     public int getDataType(int position) {
@@ -21,17 +33,17 @@ public class SimpleDataSource<T> implements DataSource<T> {
     }
 
     @Override
-    public T getData(int position) {
+    public T getDataList(int position) {
         return null;
     }
 
     @Override
-    public void setDataList(ArrayList<T> dataList) {
+    public void setDataList(@NonNull ArrayList<T> dataList) {
 
     }
 
     @Override
-    public ArrayList<T> getDataList() {
+    public ArrayList<T> getItemList() {
         return null;
     }
 }

@@ -1,14 +1,25 @@
 package com.caelan.superrecycle;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.caelan.superrecycle.data.DataSource;
+
+import java.util.ArrayList;
+
 /**
- * Created by yangjiacheng on 2017/12/11.
+ * Created by yangjiacheng on 2018/4/11.
  * ...
  */
+public abstract class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-public class SuperAdapter extends RecyclerView.Adapter{
+    private DataSource mDataSource;
+
+    private ArrayList<?> items;
+
+    private SparseArray<ItemAdapter> mItemAdapters = new SparseArray<>();
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
@@ -21,6 +32,15 @@ public class SuperAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDataSource == null ? 0 : mDataSource.getDataCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mDataSource != null) {
+            return mDataSource.getDataType(position);
+        } else {
+            return -1;
+        }
     }
 }
