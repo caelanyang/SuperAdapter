@@ -1,4 +1,4 @@
-package com.caelan.superrecycle;
+package com.caelan.superrecycle.superadapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -18,11 +18,16 @@ public class SuperViewHolder extends RecyclerView.ViewHolder {
 
     public SuperViewHolder(View itemView, int... ids) {
         super(itemView);
+        holderChildViewByIds(ids);
+    }
+
+    public void holderChildViewByIds(int... ids) {
         for (int id : ids) {
             viewHolder.put(id, itemView.findViewById(id));
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends View> T get(int id) {
         View view = viewHolder.get(id);
         if (view == null) {
@@ -32,7 +37,7 @@ public class SuperViewHolder extends RecyclerView.ViewHolder {
         return (T) view;
     }
 
-    public <T> T get(int id, Class<T> c) {
-        return (T) viewHolder.get(id);
+    public View getRootView() {
+        return itemView;
     }
 }

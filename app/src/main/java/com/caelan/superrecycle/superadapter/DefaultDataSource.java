@@ -1,16 +1,16 @@
-package com.caelan.superrecycle.data;
+package com.caelan.superrecycle.superadapter;
 
-import com.caelan.superrecycle.SuperAdapter;
+import android.support.annotation.NonNull;
 
 /**
  * Created by yangjiacheng on 2018/4/12.
  * ...
  */
-public abstract class DefaultItemList implements DataSource {
+public abstract class DefaultDataSource implements DataSource {
 
     private SuperAdapter superAdapter;
 
-    public void setSuperAdapter(SuperAdapter fastAdapter) {
+    public void setSuperAdapter(@NonNull SuperAdapter fastAdapter) {
         this.superAdapter = fastAdapter;
     }
 

@@ -6,6 +6,10 @@ package com.caelan.superrecycle;
  */
 public class TextBean {
 
+    public TextBean(String text) {
+        this.text = text;
+    }
+
     public String getText() {
         return text;
     }
@@ -14,5 +18,5 @@ public class TextBean {
         this.text = text;
     }
 
-    private String text = "test";
+    private String text;
 }
