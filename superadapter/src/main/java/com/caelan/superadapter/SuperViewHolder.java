@@ -1,4 +1,4 @@
-package com.caelan.superrecycle.superadapter;
+package com.caelan.superadapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;

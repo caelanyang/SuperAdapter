@@ -1,4 +1,4 @@
-package com.caelan.superrecycle.superadapter;
+package com.caelan.superadapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -18,6 +19,10 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private Context mContext;
 
+    private DataSource mDataSource;
+
+    private SparseArray<ItemAdapter> mItemAdapters = new SparseArray<>();
+
     public SuperAdapter(Context context) {
         mContext = context;
     }
@@ -26,10 +31,6 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mDataSource = dataSource;
         mDataSource.setSuperAdapter(this);
     }
-
-    private DataSource mDataSource;
-
-    private SparseArray<ItemAdapter> mItemAdapters = new SparseArray<>();
 
     public SuperAdapter with(int viewType, ItemAdapter itemAdapter) {
         itemAdapter.setSuperAdapter(this);
@@ -45,8 +46,9 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return this;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemAdapter itemAdapter = mItemAdapters.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (itemAdapter != null) {
@@ -56,9 +58,18 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    private void assembleClickListener(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(position));
         if (itemAdapter != null) {
             itemAdapter.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position));
@@ -81,9 +92,13 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    public DataSource getDataSource() {
+        return mDataSource;
+    }
+
     @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(holder.getAdapterPosition()));
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
         if (itemAdapter != null) {
             itemAdapter.onViewRecycled((SuperViewHolder) holder);
         } else {
@@ -92,8 +107,8 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(holder.getAdapterPosition()));
+    public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
+        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
         if (itemAdapter != null) {
             return itemAdapter.onFailedToRecycleView((SuperViewHolder) holder);
         } else {
@@ -103,8 +118,8 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(holder.getAdapterPosition()));
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
         if (itemAdapter != null) {
             itemAdapter.onViewAttachedToWindow((SuperViewHolder) holder);
         } else {
@@ -114,8 +129,8 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(holder.getAdapterPosition()));
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
         if (itemAdapter != null) {
             itemAdapter.onViewDetachedFromWindow((SuperViewHolder) holder);
         } else {
