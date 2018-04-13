@@ -13,7 +13,7 @@ public class SuperViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> viewHolder = new SparseArray<>();
 
     public SuperViewHolder(View itemView) {
-        super(itemView);
+        this(itemView, new int[0]);
     }
 
     public SuperViewHolder(View itemView, int... ids) {
@@ -35,9 +35,5 @@ public class SuperViewHolder extends RecyclerView.ViewHolder {
             viewHolder.put(id, view);
         }
         return (T) view;
-    }
-
-    public View getRootView() {
-        return itemView;
     }
 }

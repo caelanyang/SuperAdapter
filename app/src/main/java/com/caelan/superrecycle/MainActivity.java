@@ -1,6 +1,7 @@
 package com.caelan.superrecycle;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.caelan.superadapter.DefaultDataSource;
-import com.caelan.superadapter.ItemAdapter;
+import com.caelan.superadapter.ItemBinder;
 import com.caelan.superadapter.SuperAdapter;
 import com.caelan.superadapter.SuperViewHolder;
 
@@ -36,12 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mSuperAdapter = new SuperAdapter(this);
 
-        mSuperAdapter.with(new ItemAdapter<TextBean>(R.layout.item_simple_text) {
+        mSuperAdapter.with(new ItemBinder<TextBean>(R.layout.item_simple_text) {
             @Override
             public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
                 TextView textView = holder.get(R.id.simple_text);
                 TextView remove = holder.get(R.id.remove);
-                assembleClickListener(holder, remove);
+                //registerClickListener(holder, remove);
                 textView.setText(textBean.getText());
             }
 
@@ -59,12 +60,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, textBean.getText() + "long click", Toast.LENGTH_SHORT).show();
             }
 
-        }, new ItemAdapter<ImageBean>(R.layout.item_simple_image) {
+            @NonNull
+            @Override
+            public int[] getViewsIdRegisterClickListener() {
+                return new int[]{R.id.remove};
+            }
+
+        }, new ItemBinder<ImageBean>(R.layout.item_simple_image) {
             @Override
             public void onBindViewHolder(SuperViewHolder holder, ImageBean imageBean) {
                 ImageView imageView = holder.get(R.id.simple_image);
                 TextView remove = holder.get(R.id.remove);
-                assembleClickListener(holder, remove);
+                //registerClickListener(holder, remove);
                 imageView.setImageResource(imageBean.getImageRes());
             }
 
@@ -75,6 +82,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     Toast.makeText(MainActivity.this, imageBean.getImageRes(), Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @NonNull
+            @Override
+            public int[] getViewsIdRegisterClickListener() {
+                return new int[]{R.id.remove};
+            }
+
+            @Override
+            public boolean getItemClickListenerEnable() {
+                return false;
             }
         });
 

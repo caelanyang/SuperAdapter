@@ -21,7 +21,7 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private DataSource mDataSource;
 
-    private SparseArray<ItemAdapter> mItemAdapters = new SparseArray<>();
+    private SparseArray<ItemBinder> mItemAdapters = new SparseArray<>();
 
     public SuperAdapter(Context context) {
         mContext = context;
@@ -32,16 +32,16 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mDataSource.setSuperAdapter(this);
     }
 
-    public SuperAdapter with(int viewType, ItemAdapter itemAdapter) {
-        itemAdapter.setSuperAdapter(this);
-        mItemAdapters.put(viewType, itemAdapter);
+    public SuperAdapter with(int viewType, ItemBinder itemBinder) {
+        itemBinder.setSuperAdapter(this);
+        mItemAdapters.put(viewType, itemBinder);
         return this;
     }
 
-    public SuperAdapter with(ItemAdapter... itemAdapters) {
-        for (int i = 0; i < itemAdapters.length; i++) {
-            itemAdapters[i].setSuperAdapter(this);
-            mItemAdapters.put(i, itemAdapters[i]);
+    public SuperAdapter with(ItemBinder... itemBinders) {
+        for (int i = 0; i < itemBinders.length; i++) {
+            itemBinders[i].setSuperAdapter(this);
+            mItemAdapters.put(i, itemBinders[i]);
         }
         return this;
     }
@@ -49,32 +49,23 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemAdapter itemAdapter = mItemAdapters.get(viewType);
+        ItemBinder itemBinder = mItemAdapters.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        if (itemAdapter != null) {
-            return itemAdapter.onCreateViewHolder(parent, inflater);
+        if (itemBinder != null) {
+            return itemBinder.onCreateViewHolder(parent, inflater);
         } else {
-            throw new IllegalArgumentException("before use SuperAdapter ,should add at least one ItemAdapter by call the method witt()");
+            throw new IllegalArgumentException("before use SuperAdapter ,should add at least one ItemBinder by call the method witt()");
         }
-    }
-
-    private void assembleClickListener(View view) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ItemAdapter itemAdapter = mItemAdapters.get(getItemViewType(position));
-        if (itemAdapter != null) {
-            itemAdapter.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position));
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            itemBinder.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position));
         } else {
-            Log.d(TAG, "can not find the itemAdapter needed when call onBindViewHolder()");
+            Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
         }
     }
 
@@ -98,43 +89,43 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
-        if (itemAdapter != null) {
-            itemAdapter.onViewRecycled((SuperViewHolder) holder);
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            itemBinder.onViewRecycled((SuperViewHolder) holder);
         } else {
-            Log.d(TAG, "can not find the itemAdapter needed when call onBindViewHolder()");
+            Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
         }
     }
 
     @Override
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
-        if (itemAdapter != null) {
-            return itemAdapter.onFailedToRecycleView((SuperViewHolder) holder);
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            return itemBinder.onFailedToRecycleView((SuperViewHolder) holder);
         } else {
-            Log.d(TAG, "can not find the itemAdapter needed when call onFailedToRecycleView()");
+            Log.d(TAG, "can not find the itemBinder needed when call onFailedToRecycleView()");
             return super.onFailedToRecycleView(holder);
         }
     }
 
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
-        if (itemAdapter != null) {
-            itemAdapter.onViewAttachedToWindow((SuperViewHolder) holder);
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            itemBinder.onViewAttachedToWindow((SuperViewHolder) holder);
         } else {
-            Log.d(TAG, "can not find the itemAdapter needed when call onViewAttachedToWindow()");
+            Log.d(TAG, "can not find the itemBinder needed when call onViewAttachedToWindow()");
             super.onViewAttachedToWindow(holder);
         }
     }
 
     @Override
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        ItemAdapter itemAdapter = mItemAdapters.get(holder.getItemViewType());
-        if (itemAdapter != null) {
-            itemAdapter.onViewDetachedFromWindow((SuperViewHolder) holder);
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            itemBinder.onViewDetachedFromWindow((SuperViewHolder) holder);
         } else {
-            Log.d(TAG, "can not find the itemAdapter needed when call onViewDetachedFromWindow()");
+            Log.d(TAG, "can not find the itemBinder needed when call onViewDetachedFromWindow()");
             super.onViewDetachedFromWindow(holder);
         }
     }
