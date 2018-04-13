@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.caelan.superadapter.BaseData;
 import com.caelan.superadapter.DefaultDataSource;
 import com.caelan.superadapter.ItemAdapter;
 import com.caelan.superadapter.SuperAdapter;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        dataSource = new DefaultDataSource(obtainData(20), new DefaultDataSource.Intercept() {
+        dataSource = new DefaultDataSource<>(obtainData(20), new DefaultDataSource.Intercept() {
             @Override
             public int onIntercept(int position, Object data) {
                 if (data instanceof TextBean) {
@@ -98,8 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<Object> arrayList = new ArrayList<>();
         for (int i = 0; i < range; i++) {
             TextBean textBean = new TextBean("I am " + i);
+            Log.d("hasCode", String.valueOf(textBean.hashCode()));
             arrayList.add(textBean);
             ImageBean imageBean = new ImageBean(R.mipmap.ic_launcher_round);
+            Log.d("hasCode", String.valueOf(imageBean.hashCode()));
             arrayList.add(imageBean);
         }
         return arrayList;
@@ -113,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dataSource.insertData(new TextBean("I am head insert"), 0);
                 break;
             case R.id.middle_insert:
-                dataSource.addAll(obtainData(2), 1);
+                dataSource.moveData(1, 3);
                 break;
             case R.id.end_insert:
-                dataSource.addAll(obtainData(2));
+                dataSource.setNewDataList(obtainData(2));
                 break;
             default:
                 break;

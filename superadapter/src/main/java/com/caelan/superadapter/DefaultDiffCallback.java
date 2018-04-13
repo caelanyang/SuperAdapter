@@ -9,30 +9,30 @@ import java.util.List;
  * Created by yangjiacheng on 2018/4/12.
  * ...
  */
-public class CommonDiffCallback extends DiffUtil.Callback {
+public class DefaultDiffCallback<Model> extends DiffUtil.Callback {
 
-    private List<BaseData> oldItems;
-    private List<BaseData> newItems;
+    private List<Model> oldDatas;
+    private List<Model> newDatas;
 
-    public CommonDiffCallback(@NonNull List<BaseData> oldItems, @NonNull List<BaseData> newItems) {
-        this.oldItems = oldItems;
-        this.newItems = newItems;
+    public DefaultDiffCallback(@NonNull List<Model> oldDatas, @NonNull List<Model> newDatas) {
+        this.oldDatas = oldDatas;
+        this.newDatas = newDatas;
     }
 
     @Override
     public int getOldListSize() {
-        return oldItems.size();
+        return oldDatas.size();
     }
 
     @Override
     public int getNewListSize() {
-        return newItems.size();
+        return newDatas.size();
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldItems.get(oldItemPosition).getIdentifier()
-                == newItems.get(newItemPosition).getIdentifier();
+        return oldDatas.get(oldItemPosition).hashCode()
+                == newDatas.get(newItemPosition).hashCode();
     }
 
     @Override
