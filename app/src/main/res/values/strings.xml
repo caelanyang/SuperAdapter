@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SuperRecycle</string>
+    <string name="red">red</string>
+    <string name="blue">blue</string>
+    <string name="green">green</string>
+
+
 </resources>
