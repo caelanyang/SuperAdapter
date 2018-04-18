@@ -39,6 +39,9 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
         for (int id : ids) {
             views.add(viewHolder.get(id));
         }
+        if (views.size() == 0) {
+            return;
+        }
         View[] viewArray = new View[views.size()];
         registerClickListener(viewHolder, views.toArray(viewArray));
     }
@@ -79,10 +82,11 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
             }
         };
         for (View view : views) {
-            view.setOnClickListener(clickListener);
-            view.setOnLongClickListener(longClickListener);
+            if (view != null) {
+                view.setOnClickListener(clickListener);
+                view.setOnLongClickListener(longClickListener);
+            }
         }
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.caelan.superrecycle;
+package com.caelan.superrecycle.tabfragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.caelan.superrecycle.R;
 
 /**
  * Created by yangjiacheng on 2018/4/18.

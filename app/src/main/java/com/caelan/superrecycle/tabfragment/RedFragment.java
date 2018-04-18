@@ -1,4 +1,4 @@
-package com.caelan.superrecycle;
+package com.caelan.superrecycle.tabfragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,14 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.caelan.superadapter.DefaultDataSource;
-import com.caelan.superadapter.ItemBinder;
 import com.caelan.superadapter.SuperAdapter;
-import com.caelan.superadapter.SuperViewHolder;
+import com.caelan.superrecycle.ItemBinder.HorizontalRecycleItemBinder;
+import com.caelan.superrecycle.ItemBinder.SimpleImageItemBinder;
+import com.caelan.superrecycle.ItemBinder.SimpleTextItemBinder;
+import com.caelan.superrecycle.R;
+import com.caelan.superrecycle.bean.HorizontalBean;
+import com.caelan.superrecycle.bean.ImageBean;
+import com.caelan.superrecycle.bean.TextBean;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class RedFragment extends Fragment implements View.OnClickListener {
 
     private SuperAdapter mSuperAdapter;
-    private DefaultDataSource dataSource;
+    private DefaultDataSource<Object> dataSource;
 
     public RedFragment() {
         // Required empty public constructor
@@ -38,7 +40,14 @@ public class RedFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.view_red, container, false);
         initView(rootView);
+        initClickListener(rootView);
         return rootView;
+    }
+
+    private void initClickListener(View rootView) {
+        rootView.findViewById(R.id.head_insert).setOnClickListener(this);
+        rootView.findViewById(R.id.middle_insert).setOnClickListener(this);
+        rootView.findViewById(R.id.end_insert).setOnClickListener(this);
     }
 
     private void initView(View rootView) {
@@ -47,64 +56,11 @@ public class RedFragment extends Fragment implements View.OnClickListener {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mSuperAdapter = new SuperAdapter(getContext());
 
-        mSuperAdapter.with(new ItemBinder<TextBean>(R.layout.item_simple_text) {
-            @Override
-            public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
-                TextView textView = holder.get(R.id.simple_text);
-                TextView remove = holder.get(R.id.remove);
-                //registerClickListener(holder, remove);
-                textView.setText(textBean.getText());
-            }
+        SimpleTextItemBinder simpleTextItemBinder = new SimpleTextItemBinder(R.layout.item_simple_text);
+        SimpleImageItemBinder simpleImageItemBinder = new SimpleImageItemBinder(R.layout.item_simple_image);
+        HorizontalRecycleItemBinder horizontalRecycleItemBinder = new HorizontalRecycleItemBinder(R.layout.item_horizontal_recycle_view);
 
-            @Override
-            public void onClick(View v, int position, TextBean textBean) {
-                if (v.getId() == R.id.remove) {
-                    dataSource.removeData(position);
-                } else {
-                    Toast.makeText(getActivity(), textBean.getText(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onLongClick(View v, int position, TextBean textBean) {
-                Toast.makeText(getActivity(), textBean.getText() + "long click", Toast.LENGTH_SHORT).show();
-            }
-
-            @NonNull
-            @Override
-            public int[] getViewsIdRegisterClickListener() {
-                return new int[]{R.id.remove};
-            }
-
-        }, new ItemBinder<ImageBean>(R.layout.item_simple_image) {
-            @Override
-            public void onBindViewHolder(SuperViewHolder holder, ImageBean imageBean) {
-                ImageView imageView = holder.get(R.id.simple_image);
-                TextView remove = holder.get(R.id.remove);
-                //registerClickListener(holder, remove);
-                imageView.setImageResource(imageBean.getImageRes());
-            }
-
-            @Override
-            public void onClick(View v, int position, ImageBean imageBean) {
-                if (v.getId() == R.id.remove) {
-                    dataSource.removeData(position);
-                } else {
-                    Toast.makeText(getActivity(), imageBean.getImageRes(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @NonNull
-            @Override
-            public int[] getViewsIdRegisterClickListener() {
-                return new int[]{R.id.remove};
-            }
-
-            @Override
-            public boolean getItemClickListenerEnable() {
-                return false;
-            }
-        });
+        mSuperAdapter.with(simpleTextItemBinder, simpleImageItemBinder, horizontalRecycleItemBinder);
 
         dataSource = new DefaultDataSource<>(obtainData(20), new DefaultDataSource.Intercept() {
             @Override
@@ -113,6 +69,8 @@ public class RedFragment extends Fragment implements View.OnClickListener {
                     return 0;
                 } else if (data instanceof ImageBean) {
                     return 1;
+                } else if (data instanceof HorizontalBean) {
+                    return 2;
                 }
                 return 0;
             }
@@ -125,12 +83,28 @@ public class RedFragment extends Fragment implements View.OnClickListener {
     ArrayList<Object> obtainData(int range) {
         ArrayList<Object> arrayList = new ArrayList<>();
         for (int i = 0; i < range; i++) {
+            if (i == 3) {
+                HorizontalBean horizontalBean = new HorizontalBean();
+                horizontalBean.setTextBeans(obtainHorizontalData(20));
+                arrayList.add(horizontalBean);
+                continue;
+            }
             TextBean textBean = new TextBean("I am " + i);
             Log.d("hasCode", String.valueOf(textBean.hashCode()));
             arrayList.add(textBean);
             ImageBean imageBean = new ImageBean(R.mipmap.ic_launcher_round);
             Log.d("hasCode", String.valueOf(imageBean.hashCode()));
             arrayList.add(imageBean);
+        }
+        return arrayList;
+    }
+
+    ArrayList<TextBean> obtainHorizontalData(int range) {
+        ArrayList<TextBean> arrayList = new ArrayList<>();
+        for (int i = 0; i < range; i++) {
+            TextBean textBean = new TextBean("Horizontal " + i);
+            Log.d("hasCode", String.valueOf(textBean.hashCode()));
+            arrayList.add(textBean);
         }
         return arrayList;
     }

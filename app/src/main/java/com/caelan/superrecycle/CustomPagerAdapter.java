@@ -1,12 +1,14 @@
 package com.caelan.superrecycle;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
-import android.view.View;
+
+import com.caelan.superrecycle.tabfragment.BlueFragment;
+import com.caelan.superrecycle.tabfragment.GreenFragment;
+import com.caelan.superrecycle.tabfragment.RedFragment;
 
 /**
  * Created by yangjiacheng on 2018/4/18.
@@ -48,11 +50,6 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 3;
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
     }
 
     @Override

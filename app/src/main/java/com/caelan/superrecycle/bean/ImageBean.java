@@ -1,4 +1,4 @@
-package com.caelan.superrecycle;
+package com.caelan.superrecycle.bean;
 
 import android.support.annotation.DrawableRes;
 

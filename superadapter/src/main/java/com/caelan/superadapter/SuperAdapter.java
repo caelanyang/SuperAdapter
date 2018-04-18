@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -30,12 +29,6 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void setDataSource(@NonNull DataSource dataSource) {
         mDataSource = dataSource;
         mDataSource.setSuperAdapter(this);
-    }
-
-    public SuperAdapter with(int viewType, ItemBinder itemBinder) {
-        itemBinder.setSuperAdapter(this);
-        mItemAdapters.put(viewType, itemBinder);
-        return this;
     }
 
     public SuperAdapter with(ItemBinder... itemBinders) {
