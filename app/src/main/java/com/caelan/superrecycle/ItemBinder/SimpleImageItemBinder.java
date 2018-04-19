@@ -27,6 +27,7 @@ public class SimpleImageItemBinder extends ItemBinder<ImageBean> {
     @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
+        superViewHolder.holderChildViewByIds(R.id.remove, R.id.simple_image);
         registerClickListener(superViewHolder, true, R.id.simple_image, R.id.remove);
         return superViewHolder;
     }

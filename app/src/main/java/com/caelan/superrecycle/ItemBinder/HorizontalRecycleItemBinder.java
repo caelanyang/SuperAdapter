@@ -37,6 +37,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
         @Override
         public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
             SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
+            superViewHolder.holderChildViewByIds(R.id.image_name, R.id.simple_image);
             registerClickListener(superViewHolder, true);
             return superViewHolder;
         }

@@ -27,6 +27,7 @@ public class SimpleTextItemBinder extends ItemBinder<TextBean> {
     @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
+        superViewHolder.holderChildViewByIds(R.id.simple_text, R.id.remove);
         registerClickListener(superViewHolder, true, R.id.simple_text, R.id.remove);
         return superViewHolder;
     }
