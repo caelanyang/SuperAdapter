@@ -1,5 +1,6 @@
 package com.caelan.superadapter;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangjiacheng on 2018/4/12.
@@ -19,21 +21,32 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
     @LayoutRes
     private int layoutId;
 
-
     public ItemBinder(@LayoutRes int layoutId) {
         this.layoutId = layoutId;
     }
 
+    /**
+     * 为了减少OnBindViewHolder()的执行时间，避免初始化页面是可能出现的卡顿，建议重写此方法，并调用
+     * {@link SuperViewHolder#holderChildViewByIds(int...)} 方法提前把需要用到的子View 保存在SuperViewHolder中
+     * 一些比较复杂的View的初始化比如RecycleView，放在这里比较好
+     */
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
         View view = inflater.inflate(layoutId, parent, false);
-        SuperViewHolder viewHolder = new SuperViewHolder(view);
-        initClickListener(viewHolder, getViewsIdRegisterClickListener());
-        return viewHolder;
+        return new SuperViewHolder(view);
     }
 
-    private void initClickListener(SuperViewHolder viewHolder, int... ids) {
+    /**
+     * 为整个Item或者其子View注册监听事件，暂时默认注册click以及longClick
+     * 重写 {@link #onClick(View, int, Object)},{@link #onLongClick(View, int, Object)}处理点击事件
+     * 事件注册放在{@link #onCreateViewHolder(ViewGroup, LayoutInflater)}比较好
+     *
+     * @param viewHolder        SuperViewHolder
+     * @param isEnableItemClick holder.ItemView 的click开关,不影响子View的点击事件注册
+     * @param ids               需要注册click的子View的id
+     */
+    protected void registerClickListener(SuperViewHolder viewHolder, boolean isEnableItemClick, @IdRes int... ids) {
         ArrayList<View> views = new ArrayList<>();
-        if (getItemClickListenerEnable()) {
+        if (isEnableItemClick) {
             views.add(viewHolder.itemView);
         }
         for (int id : ids) {
@@ -43,28 +56,11 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
             return;
         }
         View[] viewArray = new View[views.size()];
-        registerClickListener(viewHolder, views.toArray(viewArray));
-    }
-
-    /**
-     * 只控制整个Item的点击事件，默认注册
-     *
-     * @see #getItemClickListenerEnable()
-     * note: 不控制子View的点击事件，子View通过
-     * @see #getViewsIdRegisterClickListener() 或者
-     * @see #registerClickListener(SuperViewHolder, View...) 注册
-     */
-    public boolean getItemClickListenerEnable() {
-        return true;
-    }
-
-    @NonNull
-    public int[] getViewsIdRegisterClickListener() {
-        return new int[0];
+        initClickListener(viewHolder, views.toArray(viewArray));
     }
 
     @SuppressWarnings("unchecked")
-    public void registerClickListener(final SuperViewHolder viewHolder, View... views) {
+    private void initClickListener(final SuperViewHolder viewHolder, View... views) {
         final ItemBinder that = this;
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
@@ -99,7 +95,11 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
 
     }
 
-    protected abstract void onBindViewHolder(SuperViewHolder holder, Model model);
+    public abstract void onBindViewHolder(SuperViewHolder holder, Model model);
+
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, Model model, @NonNull List<Object> payloads) {
+        onBindViewHolder(holder, model);
+    }
 
     public void onViewRecycled(@NonNull SuperViewHolder holder) {
 
@@ -117,11 +117,12 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
 
     }
 
-    public SuperAdapter getSuperAdapter() {
+    protected SuperAdapter getSuperAdapter() {
         return mSuperAdapter;
     }
 
     public void setSuperAdapter(@NonNull SuperAdapter superAdapter) {
         mSuperAdapter = superAdapter;
     }
+
 }

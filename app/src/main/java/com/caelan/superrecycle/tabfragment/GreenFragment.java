@@ -16,7 +16,6 @@ import com.caelan.superrecycle.R;
 public class GreenFragment extends Fragment {
 
     public GreenFragment() {
-        // Required empty public constructor
     }
 
     @Override

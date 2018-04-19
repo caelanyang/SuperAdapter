@@ -29,12 +29,9 @@ import java.util.ArrayList;
  */
 public class RedFragment extends Fragment implements View.OnClickListener {
 
-    private SuperAdapter mSuperAdapter;
     private DefaultDataSource<Object> dataSource;
 
-    public RedFragment() {
-        // Required empty public constructor
-    }
+    public RedFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,13 +51,13 @@ public class RedFragment extends Fragment implements View.OnClickListener {
         RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mSuperAdapter = new SuperAdapter(getContext());
+        SuperAdapter<Object> superAdapter = new SuperAdapter<>(getContext());
 
         SimpleTextItemBinder simpleTextItemBinder = new SimpleTextItemBinder(R.layout.item_simple_text);
         SimpleImageItemBinder simpleImageItemBinder = new SimpleImageItemBinder(R.layout.item_simple_image);
         HorizontalRecycleItemBinder horizontalRecycleItemBinder = new HorizontalRecycleItemBinder(R.layout.item_horizontal_recycle_view);
 
-        mSuperAdapter.with(simpleTextItemBinder, simpleImageItemBinder, horizontalRecycleItemBinder);
+        superAdapter.with(simpleTextItemBinder, simpleImageItemBinder, horizontalRecycleItemBinder);
 
         dataSource = new DefaultDataSource<>(obtainData(20), new DefaultDataSource.Intercept() {
             @Override
@@ -75,9 +72,8 @@ public class RedFragment extends Fragment implements View.OnClickListener {
                 return 0;
             }
         });
-        mSuperAdapter.setDataSource(dataSource);
-        recyclerView.setAdapter(mSuperAdapter);
-        mSuperAdapter.notifyDataSetChanged();
+        superAdapter.setDataSource(dataSource);
+        recyclerView.setAdapter(superAdapter);
     }
 
     ArrayList<Object> obtainData(int range) {
@@ -85,7 +81,7 @@ public class RedFragment extends Fragment implements View.OnClickListener {
         for (int i = 0; i < range; i++) {
             if (i == 3) {
                 HorizontalBean horizontalBean = new HorizontalBean();
-                horizontalBean.setTextBeans(obtainHorizontalData(20));
+                horizontalBean.setTextBeans(obtainHorizontalData(20, ""));
                 arrayList.add(horizontalBean);
                 continue;
             }
@@ -99,10 +95,10 @@ public class RedFragment extends Fragment implements View.OnClickListener {
         return arrayList;
     }
 
-    ArrayList<TextBean> obtainHorizontalData(int range) {
+    ArrayList<TextBean> obtainHorizontalData(int range, String optionalString) {
         ArrayList<TextBean> arrayList = new ArrayList<>();
         for (int i = 0; i < range; i++) {
-            TextBean textBean = new TextBean("Horizontal " + i);
+            TextBean textBean = new TextBean("Horizontal " + optionalString + i);
             Log.d("hasCode", String.valueOf(textBean.hashCode()));
             arrayList.add(textBean);
         }
@@ -120,7 +116,10 @@ public class RedFragment extends Fragment implements View.OnClickListener {
                 dataSource.moveData(1, 3);
                 break;
             case R.id.end_insert:
-                dataSource.setNewDataList(obtainData(2));
+                //dataSource.setNewDataList(obtainData(2));
+                HorizontalBean horizontalBean = new HorizontalBean();
+                horizontalBean.setTextBeans(obtainHorizontalData(12, "payload"));
+                dataSource.notifyItemChanged(6, horizontalBean);
                 break;
             default:
                 break;

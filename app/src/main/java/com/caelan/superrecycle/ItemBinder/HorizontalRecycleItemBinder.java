@@ -20,21 +20,44 @@ import com.caelan.superrecycle.R;
 import com.caelan.superrecycle.bean.HorizontalBean;
 import com.caelan.superrecycle.bean.TextBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by yangjiacheng on 2018/4/18.
  * ...
  */
 public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
 
-    private SuperAdapter mAdapter;
+    private SuperAdapter<TextBean> mAdapter;
 
-    private LinearLayoutManager mLayoutManager;
+    private boolean isFirstBind = true;
 
     private ItemBinder<TextBean> childItemBinder = new ItemBinder<TextBean>(R.layout.item_of_horizontal_recycle) {
         @Override
-        protected void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
+        public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+            SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
+            registerClickListener(superViewHolder, true);
+            return superViewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
             TextView imageName = holder.get(R.id.image_name);
             imageName.setText(textBean.getText());
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull SuperViewHolder holder, TextBean textBean, @NonNull List<Object> payloads) {
+            if (payloads.isEmpty()) {
+                super.onBindViewHolder(holder, textBean, payloads);
+            } else {
+                if (payloads.get(0) instanceof String) {
+                    TextView imageName = holder.get(R.id.image_name);
+                    String s = textBean.getText() + payloads.get(0);
+                    imageName.setText(s);
+                }
+            }
         }
 
         @Override
@@ -42,10 +65,10 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
             Toast.makeText(v.getContext(), textBean.getText(), Toast.LENGTH_SHORT).show();
         }
 
-        @NonNull
         @Override
-        public int[] getViewsIdRegisterClickListener() {
-            return new int[]{R.id.simple_image};
+        public void onLongClick(View v, int position, TextBean textBean) {
+            Toast.makeText(v.getContext(), textBean.getText() + "Long", Toast.LENGTH_SHORT).show();
+            getSuperAdapter().notifyItemChanged(position, "payload");
         }
     };
 
@@ -53,35 +76,46 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
         super(layoutId);
     }
 
+    private void initView(SuperViewHolder viewHolder) {
+        Context context = viewHolder.itemView.getContext();
+        RecyclerView horizontalView = viewHolder.get(R.id.horizontal_recycle_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        horizontalView.setItemAnimator(new DefaultItemAnimator());
+        horizontalView.setLayoutManager(layoutManager);
+        mAdapter = new SuperAdapter<>(context);
+        mAdapter.with(childItemBinder);
+        DataSource<TextBean> horizontalDataSource = new DefaultDataSource<>(new ArrayList<TextBean>());
+        mAdapter.setDataSource(horizontalDataSource);
+        horizontalView.setAdapter(mAdapter);
+    }
+
     @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
-        superViewHolder.holderChildViewByIds(R.id.horizontal_recycle_view);
+        initView(superViewHolder);
+        registerClickListener(superViewHolder, false);
         return superViewHolder;
     }
 
     @Override
-    protected void onBindViewHolder(SuperViewHolder holder, HorizontalBean horizontalBean) {
-        Context context = holder.itemView.getContext();
-        RecyclerView horizontalView = holder.get(R.id.horizontal_recycle_view);
-        if (mLayoutManager == null) {
-            mLayoutManager = new LinearLayoutManager(context);
-            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            horizontalView.setItemAnimator(new DefaultItemAnimator());
-            horizontalView.setLayoutManager(mLayoutManager);
-        }
-        if (mAdapter == null) {
-            mAdapter = new SuperAdapter(context);
-            mAdapter.with(childItemBinder);
-            DataSource<TextBean> horizontalDataSource = new DefaultDataSource<>(horizontalBean.getTextBeans());
-            mAdapter.setDataSource(horizontalDataSource);
-            horizontalView.setAdapter(mAdapter);
+    public void onBindViewHolder(SuperViewHolder holder, HorizontalBean horizontalBean) {
+        if (isFirstBind) {
+            mAdapter.getDataSource().setDataList(horizontalBean.getTextBeans());
+            isFirstBind = false;
         }
     }
 
     @Override
-    public boolean getItemClickListenerEnable() {
-        return false;
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, HorizontalBean horizontalBean, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, horizontalBean, payloads);
+        } else {
+            if (payloads.get(0) instanceof HorizontalBean) {
+                HorizontalBean horizontalBean1 = (HorizontalBean) payloads.get(0);
+                mAdapter.getDataSource().setDataList(horizontalBean1.getTextBeans());
+            }
+        }
     }
 
 }

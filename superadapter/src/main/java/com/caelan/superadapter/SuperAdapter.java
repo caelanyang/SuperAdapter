@@ -8,17 +8,19 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * Created by yangjiacheng on 2018/4/11.
- * ...
+ * 此处的泛型 Model 与 DataSource 的泛型一致
  */
-public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = SuperAdapter.class.getSimpleName();
 
     private Context mContext;
 
-    private DataSource mDataSource;
+    private DataSource<Model> mDataSource;
 
     private SparseArray<ItemBinder> mItemAdapters = new SparseArray<>();
 
@@ -26,7 +28,7 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mContext = context;
     }
 
-    public void setDataSource(@NonNull DataSource dataSource) {
+    public void setDataSource(@NonNull DataSource<Model> dataSource) {
         mDataSource = dataSource;
         mDataSource.setSuperAdapter(this);
     }
@@ -62,6 +64,17 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
+        if (itemBinder != null) {
+            itemBinder.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position), payloads);
+        } else {
+            Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mDataSource == null ? 0 : mDataSource.getDataCount();
@@ -76,7 +89,7 @@ public class SuperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public DataSource getDataSource() {
+    public DataSource<Model> getDataSource() {
         return mDataSource;
     }
 

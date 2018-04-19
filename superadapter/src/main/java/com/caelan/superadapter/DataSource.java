@@ -1,6 +1,7 @@
 package com.caelan.superadapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.List;
 
@@ -36,4 +37,7 @@ public interface DataSource<Model> {
 
     void moveData(int fromPosition, int toPosition);
 
+    void notifyItemChanged(int position, @Nullable Object payload);
+
+    void notifyItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload);
 }

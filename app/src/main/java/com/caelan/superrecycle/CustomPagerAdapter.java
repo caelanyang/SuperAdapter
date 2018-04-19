@@ -20,7 +20,7 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    public CustomPagerAdapter(Context context, FragmentManager fm) {
+    CustomPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }

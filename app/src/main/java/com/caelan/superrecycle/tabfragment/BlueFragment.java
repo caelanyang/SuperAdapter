@@ -14,9 +14,7 @@ import com.caelan.superrecycle.R;
  * ...
  */
 public class BlueFragment extends Fragment {
-    public BlueFragment() {
-        // Required empty public constructor
-    }
+    public BlueFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

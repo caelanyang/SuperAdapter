@@ -1,6 +1,7 @@
 package com.caelan.superadapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
     @Override
     public void removeData(int position) {
         mDataList.remove(position);
-        superAdapter.notifyItemRemoved(position);
+        getSuperAdapter().notifyItemRemoved(position);
     }
 
     @Override
@@ -83,26 +84,26 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
     @Override
     public void insertData(@NonNull Model data, int position) {
         mDataList.add(position, data);
-        superAdapter.notifyItemInserted(position);
+        getSuperAdapter().notifyItemInserted(position);
     }
 
     @Override
     public void insertDataRange(@NonNull List<Model> insertDataList, int position) {
         mDataList.addAll(position, insertDataList);
-        superAdapter.notifyItemRangeInserted(position, insertDataList.size());
+        getSuperAdapter().notifyItemRangeInserted(position, insertDataList.size());
     }
 
     @Override
     public void addAll(@NonNull List<Model> addedDataList, int position) {
         mDataList.addAll(position, addedDataList);
-        superAdapter.notifyItemRangeInserted(position, addedDataList.size());
+        getSuperAdapter().notifyItemRangeInserted(position, addedDataList.size());
     }
 
     @Override
     public void addAll(@NonNull List<Model> addedDataList) {
         int countBefore = mDataList.size();
         mDataList.addAll(addedDataList);
-        superAdapter.notifyItemRangeInserted(countBefore, addedDataList.size());
+        getSuperAdapter().notifyItemRangeInserted(countBefore, addedDataList.size());
     }
 
     @Override
@@ -110,7 +111,17 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
         Model targetData = mDataList.get(fromPosition);
         mDataList.remove(fromPosition);
         mDataList.add(toPosition, targetData);
-        superAdapter.notifyItemMoved(fromPosition, toPosition);
+        getSuperAdapter().notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void notifyItemChanged(int position, @Nullable Object payload) {
+        getSuperAdapter().notifyItemChanged(position, payload);
+    }
+
+    @Override
+    public void notifyItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+        getSuperAdapter().notifyItemRangeChanged(positionStart, itemCount, payload);
     }
 
     public SuperAdapter getSuperAdapter() {
