@@ -52,7 +52,7 @@ public class RedFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         SuperAdapter<Object> superAdapter = new SuperAdapter<>(getContext());
-
+        recyclerView.setNestedScrollingEnabled(false);
         SimpleTextItemBinder simpleTextItemBinder = new SimpleTextItemBinder(R.layout.item_simple_text);
         SimpleImageItemBinder simpleImageItemBinder = new SimpleImageItemBinder(R.layout.item_simple_image);
         HorizontalRecycleItemBinder horizontalRecycleItemBinder = new HorizontalRecycleItemBinder(R.layout.item_horizontal_recycle_view);

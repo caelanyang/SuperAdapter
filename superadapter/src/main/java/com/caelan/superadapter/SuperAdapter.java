@@ -12,9 +12,9 @@ import java.util.List;
 
 /**
  * Created by yangjiacheng on 2018/4/11.
- * 此处的泛型 Model 与 DataSource 的泛型一致
+ * 此处的泛型 Model 与 DataSource 的泛型一致,用来限定DataSource的Type
  */
-public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SuperAdapter<Model> extends RecyclerView.Adapter<SuperViewHolder> {
 
     private static final String TAG = SuperAdapter.class.getSimpleName();
 
@@ -43,7 +43,7 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemBinder itemBinder = mItemAdapters.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (itemBinder != null) {
@@ -55,10 +55,10 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, int position) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            itemBinder.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position));
+            itemBinder.onBindViewHolder(holder, mDataSource.getData(position));
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
         }
@@ -66,10 +66,10 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, int position, @NonNull List<Object> payloads) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            itemBinder.onBindViewHolder((SuperViewHolder) holder, mDataSource.getData(position), payloads);
+            itemBinder.onBindViewHolder(holder, mDataSource.getData(position), payloads);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
         }
@@ -94,20 +94,20 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+    public void onViewRecycled(@NonNull SuperViewHolder holder) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            itemBinder.onViewRecycled((SuperViewHolder) holder);
+            itemBinder.onViewRecycled(holder);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
         }
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
+    public boolean onFailedToRecycleView(@NonNull SuperViewHolder holder) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            return itemBinder.onFailedToRecycleView((SuperViewHolder) holder);
+            return itemBinder.onFailedToRecycleView(holder);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onFailedToRecycleView()");
             return super.onFailedToRecycleView(holder);
@@ -115,10 +115,10 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull SuperViewHolder holder) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            itemBinder.onViewAttachedToWindow((SuperViewHolder) holder);
+            itemBinder.onViewAttachedToWindow(holder);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onViewAttachedToWindow()");
             super.onViewAttachedToWindow(holder);
@@ -126,10 +126,10 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull SuperViewHolder holder) {
         ItemBinder itemBinder = mItemAdapters.get(holder.getItemViewType());
         if (itemBinder != null) {
-            itemBinder.onViewDetachedFromWindow((SuperViewHolder) holder);
+            itemBinder.onViewDetachedFromWindow(holder);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onViewDetachedFromWindow()");
             super.onViewDetachedFromWindow(holder);

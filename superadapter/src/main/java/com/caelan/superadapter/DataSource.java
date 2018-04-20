@@ -17,6 +17,8 @@ public interface DataSource<Model> {
 
     Model getData(int position);
 
+    List<Model> getDataList();
+
     void setDataList(@NonNull List<Model> dataList);
 
     void setSuperAdapter(@NonNull SuperAdapter superAdapter);

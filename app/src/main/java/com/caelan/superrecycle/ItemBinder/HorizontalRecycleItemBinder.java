@@ -33,7 +33,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
 
     private boolean isFirstBind = true;
 
-    private ItemBinder<TextBean> childItemBinder = new ItemBinder<TextBean>(R.layout.item_of_horizontal_recycle) {
+    private ItemBinder childItemBinder = new ItemBinder<TextBean>(R.layout.item_of_horizontal_recycle) {
         @Override
         public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
             SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);

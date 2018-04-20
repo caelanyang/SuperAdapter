@@ -47,6 +47,11 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
     }
 
     @Override
+    public List<Model> getDataList() {
+        return mDataList;
+    }
+
+    @Override
     public void setDataList(@NonNull List<Model> dataList) {
         diffData(dataList);
     }
@@ -70,7 +75,7 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
     @Override
     public void removeData(int position) {
         mDataList.remove(position);
-        getSuperAdapter().notifyItemRemoved(position);
+        superAdapter.notifyItemRemoved(position);
     }
 
     @Override
@@ -84,26 +89,26 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
     @Override
     public void insertData(@NonNull Model data, int position) {
         mDataList.add(position, data);
-        getSuperAdapter().notifyItemInserted(position);
+        superAdapter.notifyItemInserted(position);
     }
 
     @Override
     public void insertDataRange(@NonNull List<Model> insertDataList, int position) {
         mDataList.addAll(position, insertDataList);
-        getSuperAdapter().notifyItemRangeInserted(position, insertDataList.size());
+        superAdapter.notifyItemRangeInserted(position, insertDataList.size());
     }
 
     @Override
     public void addAll(@NonNull List<Model> addedDataList, int position) {
         mDataList.addAll(position, addedDataList);
-        getSuperAdapter().notifyItemRangeInserted(position, addedDataList.size());
+        superAdapter.notifyItemRangeInserted(position, addedDataList.size());
     }
 
     @Override
     public void addAll(@NonNull List<Model> addedDataList) {
         int countBefore = mDataList.size();
         mDataList.addAll(addedDataList);
-        getSuperAdapter().notifyItemRangeInserted(countBefore, addedDataList.size());
+        superAdapter.notifyItemRangeInserted(countBefore, addedDataList.size());
     }
 
     @Override
@@ -111,17 +116,17 @@ public class DefaultDataSource<Model> implements DataSource<Model> {
         Model targetData = mDataList.get(fromPosition);
         mDataList.remove(fromPosition);
         mDataList.add(toPosition, targetData);
-        getSuperAdapter().notifyItemMoved(fromPosition, toPosition);
+        superAdapter.notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
     public void notifyItemChanged(int position, @Nullable Object payload) {
-        getSuperAdapter().notifyItemChanged(position, payload);
+        superAdapter.notifyItemChanged(position, payload);
     }
 
     @Override
     public void notifyItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-        getSuperAdapter().notifyItemRangeChanged(positionStart, itemCount, payload);
+        superAdapter.notifyItemRangeChanged(positionStart, itemCount, payload);
     }
 
     public SuperAdapter getSuperAdapter() {

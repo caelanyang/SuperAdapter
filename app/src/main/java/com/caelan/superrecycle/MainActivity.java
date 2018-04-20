@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.viewpager);
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(customPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
