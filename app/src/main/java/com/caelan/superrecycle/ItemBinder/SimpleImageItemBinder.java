@@ -25,7 +25,7 @@ public class SimpleImageItemBinder extends ItemBinder<ImageBean> {
     }
 
     @Override
-    public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+    public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
         superViewHolder.holderChildViewByIds(R.id.remove, R.id.simple_image);
         registerClickListener(superViewHolder, true, R.id.simple_image, R.id.remove);
@@ -33,7 +33,7 @@ public class SimpleImageItemBinder extends ItemBinder<ImageBean> {
     }
 
     @Override
-    public void onBindViewHolder(SuperViewHolder holder, ImageBean imageBean) {
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, ImageBean imageBean) {
         ImageView imageView = holder.get(R.id.simple_image);
         imageView.setImageResource(imageBean.getImageRes());
     }

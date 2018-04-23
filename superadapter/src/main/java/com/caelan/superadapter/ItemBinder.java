@@ -30,7 +30,7 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
      * {@link SuperViewHolder#holderChildViewByIds(int...)} 方法提前把需要用到的子View 保存在SuperViewHolder中
      * 一些比较复杂的View的初始化比如RecycleView，放在这里比较好
      */
-    public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+    public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         View view = inflater.inflate(layoutId, parent, false);
         return new SuperViewHolder(view);
     }
@@ -95,7 +95,7 @@ public abstract class ItemBinder<Model> implements ItemClickListener<Model> {
 
     }
 
-    public abstract void onBindViewHolder(SuperViewHolder holder, Model model);
+    public abstract void onBindViewHolder(@NonNull SuperViewHolder holder, Model model);
 
     public void onBindViewHolder(@NonNull SuperViewHolder holder, Model model, @NonNull List<Object> payloads) {
         onBindViewHolder(holder, model);

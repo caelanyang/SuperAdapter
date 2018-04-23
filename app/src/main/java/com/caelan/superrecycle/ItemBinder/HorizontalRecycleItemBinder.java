@@ -92,7 +92,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
     }
 
     @Override
-    public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+    public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
         initView(superViewHolder);
         registerClickListener(superViewHolder, false);
@@ -100,7 +100,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
     }
 
     @Override
-    public void onBindViewHolder(SuperViewHolder holder, HorizontalBean horizontalBean) {
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, HorizontalBean horizontalBean) {
         if (isFirstBind) {
             mAdapter.getDataSource().setDataList(horizontalBean.getTextBeans());
             isFirstBind = false;

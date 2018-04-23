@@ -25,7 +25,7 @@ public class SimpleTextItemBinder extends ItemBinder<TextBean> {
     }
 
     @Override
-    public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+    public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
         superViewHolder.holderChildViewByIds(R.id.simple_text, R.id.remove);
         registerClickListener(superViewHolder, true, R.id.simple_text, R.id.remove);
@@ -33,7 +33,7 @@ public class SimpleTextItemBinder extends ItemBinder<TextBean> {
     }
 
     @Override
-    public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
+    public void onBindViewHolder(@NonNull SuperViewHolder holder, TextBean textBean) {
         TextView textView = holder.get(R.id.simple_text);
         textView.setText(textBean.getText());
     }
