@@ -100,6 +100,7 @@ public class SuperAdapter<Model> extends RecyclerView.Adapter<SuperViewHolder> {
             itemBinder.onViewRecycled(holder);
         } else {
             Log.d(TAG, "can not find the itemBinder needed when call onBindViewHolder()");
+            super.onViewRecycled(holder);
         }
     }
 

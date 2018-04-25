@@ -35,7 +35,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
 
     private ItemBinder childItemBinder = new ItemBinder<TextBean>(R.layout.item_of_horizontal_recycle) {
         @Override
-        public SuperViewHolder onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+        public SuperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
             SuperViewHolder superViewHolder = super.onCreateViewHolder(parent, inflater);
             superViewHolder.holderChildViewByIds(R.id.image_name, R.id.simple_image);
             registerClickListener(superViewHolder, true);
@@ -43,7 +43,7 @@ public class HorizontalRecycleItemBinder extends ItemBinder<HorizontalBean> {
         }
 
         @Override
-        public void onBindViewHolder(SuperViewHolder holder, TextBean textBean) {
+        public void onBindViewHolder(@NonNull SuperViewHolder holder, TextBean textBean) {
             TextView imageName = holder.get(R.id.image_name);
             imageName.setText(textBean.getText());
         }
