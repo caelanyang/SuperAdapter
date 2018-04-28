@@ -1,5 +1,16 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'caelanyang'//bintray.com用户名
+    groupId = 'site.jiacheng'//jcenter上的路径
+    artifactId = 'superadapter'//项目名称
+    publishVersion = '1.0.1'//版本号
+    desc = 'this is a decoupled Adapter for RecycleView'//描述，不重要
+    website = 'https://jiacheng.site'//网站，最好有，不重要
+}
+
 android {
     compileSdkVersion 27
 
@@ -11,6 +22,12 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+    }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
     }
 
     buildTypes {
@@ -27,6 +44,6 @@ dependencies {
 
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

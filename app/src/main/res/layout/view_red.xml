@@ -13,7 +13,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="onClick"
             android:text="前加" />
 
         <Button
@@ -21,7 +20,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="onClick"
             android:text="中加" />
 
         <Button
@@ -29,7 +27,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="onClick"
             android:text="后加" />
 
     </LinearLayout>

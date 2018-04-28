@@ -1,15 +1,12 @@
 package com.caelan.superrecycle.bean;
 
-import com.caelan.superadapter.BaseData;
-
 /**
  * Created by yangjiacheng on 2018/4/12.
  * ...
  */
-public class TextBean extends BaseData {
+public class TextBean {
 
     public TextBean(String text) {
-        generateIdentifier();
         this.text = text;
     }
 
